@@ -61,8 +61,8 @@ public class AuthExample {
     - **Body**
       ```json
       {
-        "username": "<학번>",
-        "password": "<비밀번호>"
+          "username": "<학번>",
+          "password": "<비밀번호>"
       }
       ```
 
@@ -70,10 +70,10 @@ public class AuthExample {
     - **Success**: `200 OK`
       ```json
       {
-        "username": "201911019",
-        "name": "최현민",
-        "department": "컴퓨터과학전공",
-        "email": "hyunmin-choi@naver.com"
+          "username": "201911019",
+          "name": "최현민",
+          "department": "컴퓨터과학전공",
+          "email": "hyunmin-choi@naver.com"
       }
       ```
     - **Fail**: `401 Unauthorized`
