@@ -2,12 +2,13 @@ package com.smunity.util;
 
 import com.smunity.dto.AuthRequestDto;
 import com.smunity.exception.AuthException;
-import com.smunity.exception.code.AuthErrorCode;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static com.smunity.exception.code.AuthErrorCode.*;
 
 public class LoginUtil {
 
@@ -19,7 +20,7 @@ public class LoginUtil {
             Connection.Response loginResponse = executeLogin(requestDto);
             return getSessionCookies(loginResponse);
         } catch (IOException e) {
-            throw new AuthException("Failed to Login.", AuthErrorCode.AUTH_LOGIN_FAIL);
+            throw new AuthException("Failed to Login.", AUTH_LOGIN_FAIL);
         }
     }
 
@@ -30,7 +31,7 @@ public class LoginUtil {
                 .method(Connection.Method.POST)
                 .execute();
         if (response.url().toString().equals(LOGIN_URL))
-            throw new AuthException("ID and password do not match.", AuthErrorCode.AUTH_UNAUTHORIZED);
+            throw new AuthException("ID and password do not match.", AUTH_UNAUTHORIZED);
         return response;
     }
 
@@ -40,7 +41,7 @@ public class LoginUtil {
                 .cookies(loginResponse.cookies())
                 .execute();
         if (!response.url().toString().equals(BASE_URL))
-            throw new AuthException("Login failed, exceeded 5 attempts.", AuthErrorCode.AUTH_EXCEEDED_LOGIN_ATTEMPTS);
+            throw new AuthException("Login failed, exceeded 5 attempts.", AUTH_EXCEEDED_LOGIN_ATTEMPTS);
         return response.cookies();
     }
 }

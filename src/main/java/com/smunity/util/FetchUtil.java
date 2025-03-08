@@ -2,9 +2,7 @@ package com.smunity.util;
 
 import com.smunity.dto.AuthRequestDto;
 import com.smunity.exception.AuthException;
-import com.smunity.exception.code.AuthErrorCode;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -13,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+
+import static com.smunity.exception.code.AuthErrorCode.AUTH_FETCH_FAILURE;
 
 public class FetchUtil {
 
@@ -23,23 +23,19 @@ public class FetchUtil {
         return response.getJSONObject(0);
     }
 
-    private static JSONArray fetchData(AuthRequestDto requestDto, String url, String key) {
-        JSONObject response = fetchData(requestDto, url);
-        try {
-            return response.getJSONArray(key);
-        } catch (JSONException e) {
-            throw new AuthException("Failed to get JSONArray for key '%s'. Response: %s".formatted(key, response), AuthErrorCode.AUTH_INVALID_FORMAT);
-        }
+    protected static JSONArray fetchCourses(String username, String password) {
+        return fetchData(AuthRequestDto.of(username, password), "UsrRecMatt/list.do", "dsRecMattList");
     }
 
-    private static JSONObject fetchData(AuthRequestDto requestDto, String url) {
+    private static JSONArray fetchData(AuthRequestDto requestDto, String url, String key) {
         Map<String, String> session = LoginUtil.login(requestDto);
         try {
             HttpURLConnection connection = createConnection(BASE_URL + url, session);
             connection.getOutputStream().write(createRequestData(requestDto));
-            return readResponse(connection);
+            JSONObject response = readResponse(connection);
+            return response.getJSONArray(key);
         } catch (IOException e) {
-            throw new AuthException("Failed to fetch data from URL: '%s'.".formatted(url), AuthErrorCode.AUTH_FETCH_FAILURE);
+            throw new AuthException("Failed to fetch data from URL: '%s'.".formatted(url), AUTH_FETCH_FAILURE);
         }
     }
 

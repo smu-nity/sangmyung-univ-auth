@@ -1,10 +1,13 @@
 package com.smunity.util;
 
+import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
 import com.smunity.exception.AuthException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static com.smunity.exception.code.AuthErrorCode.AUTH_UNAUTHORIZED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class AuthUtilTest {
 
     @Test
-    @DisplayName("인증 성공 시 응답 반환")
+    @DisplayName("올바른 인증 정보로 로그인 시 인증 응답 반환")
     public void authenticateSuccess() {
         // given
         String username = "201911019";
@@ -31,8 +34,36 @@ class AuthUtilTest {
     }
 
     @Test
-    @DisplayName("인증 실패 시 예외 발생")
+    @DisplayName("잘못된 인증 정보로 로그인 시 예외 발생")
     public void authenticateFailure() {
+        // given
+        String username = "201911019";
+        String password = "password";
+
+        // when & then
+        AuthException exception = Assertions.assertThrows(AuthException.class, () -> {
+            AuthUtil.authenticate(username, password);
+        });
+        Assertions.assertEquals(exception.getErrorCode(), AUTH_UNAUTHORIZED);
+    }
+
+    @Test
+    @DisplayName("올바른 인증 정보로 수강 과목 조회 시 응답 반환")
+    public void readCoursesSuccess() {
+        // given
+        String username = "201911019";
+        String password = System.getenv("PASSWORD");
+
+        // when
+        List<AuthCourseResponseDto> responseDtos = AuthUtil.readCourses(username, password);
+
+        // then
+        assertEquals(46, responseDtos.size());
+    }
+
+    @Test
+    @DisplayName("잘못된 인증 정보로 수강 과목 조회 시 예외 발생")
+    public void readCoursesFailure() {
         // given
         String username = "201911019";
         String password = "password";
