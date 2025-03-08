@@ -79,7 +79,7 @@ public class AuthExample {
     - **Fail**: `401 Unauthorized`
       ```json
       {
-        "code": "AUTH001",
-        "message": "학번 및 비밀번호가 일치하지 않습니다."
+          "code": "AUTH001",
+          "message": "학번 및 비밀번호가 일치하지 않습니다."
       }
       ```
