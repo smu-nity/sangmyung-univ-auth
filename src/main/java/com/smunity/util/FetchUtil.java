@@ -2,7 +2,6 @@ package com.smunity.util;
 
 import com.smunity.dto.AuthRequestDto;
 import com.smunity.exception.AuthException;
-import com.smunity.exception.code.AuthErrorCode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +12,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+
+import static com.smunity.exception.code.AuthErrorCode.AUTH_FETCH_FAILURE;
+import static com.smunity.exception.code.AuthErrorCode.AUTH_INVALID_FORMAT;
 
 public class FetchUtil {
 
@@ -32,7 +34,7 @@ public class FetchUtil {
         try {
             return response.getJSONArray(key);
         } catch (JSONException e) {
-            throw new AuthException("Failed to get JSONArray for key '%s'. Response: %s".formatted(key, response), AuthErrorCode.AUTH_INVALID_FORMAT);
+            throw new AuthException("Failed to get JSONArray for key '%s'. Response: %s".formatted(key, response), AUTH_INVALID_FORMAT);
         }
     }
 
@@ -43,7 +45,7 @@ public class FetchUtil {
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (IOException e) {
-            throw new AuthException("Failed to fetch data from URL: '%s'.".formatted(url), AuthErrorCode.AUTH_FETCH_FAILURE);
+            throw new AuthException("Failed to fetch data from URL: '%s'.".formatted(url), AUTH_FETCH_FAILURE);
         }
     }
 
