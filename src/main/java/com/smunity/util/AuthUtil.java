@@ -14,7 +14,7 @@ public class AuthUtil {
         return AuthResponseDto.from(response);
     }
 
-    public List<AuthCourseResponseDto> readCourses(String username, String password) {
+    public static List<AuthCourseResponseDto> readCourses(String username, String password) {
         JSONArray response = FetchUtil.fetchCourses(username, password);
         return AuthCourseResponseDto.from(response);
     }
