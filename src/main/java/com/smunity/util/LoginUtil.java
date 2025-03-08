@@ -31,7 +31,7 @@ public class LoginUtil {
                 .method(Connection.Method.POST)
                 .execute();
         if (response.url().toString().equals(LOGIN_URL))
-            throw new AuthException("ID and password do not match.", AUTH_UNAUTHORIZED);
+            throw new AuthException("Username and password do not match.", AUTH_UNAUTHORIZED);
         return response;
     }
 
