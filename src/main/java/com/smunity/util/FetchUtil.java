@@ -23,6 +23,10 @@ public class FetchUtil {
         return response.getJSONObject(0);
     }
 
+    protected static JSONArray fetchCourses(String username, String password) {
+        return fetchData(AuthRequestDto.of(username, password), "UsrRecMatt/list.do", "dsRecMattList");
+    }
+
     private static JSONArray fetchData(AuthRequestDto requestDto, String url, String key) {
         JSONObject response = fetchData(requestDto, url);
         try {
