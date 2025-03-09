@@ -1,7 +1,8 @@
-package com.smunity.util;
+package com.smunity;
 
 import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
+import com.smunity.util.FetchUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
