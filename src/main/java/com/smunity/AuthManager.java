@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class AuthUtil {
+public class AuthManager {
 
     public static AuthResponseDto authenticate(String username, String password) {
         JSONObject response = FetchUtil.fetchInfo(username, password);
