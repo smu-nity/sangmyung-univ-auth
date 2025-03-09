@@ -1,14 +1,56 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.3'
-    id 'io.spring.dependency-management' version '1.1.6'
+    id "com.vanniktech.maven.publish" version "0.28.0"
+    id 'signing'
 }
 
+def latestGitTag = 'git describe --tags --abbrev=0'.execute().text.trim().replace('v', '')
+
 group = 'com.smunity'
-version = '1.0-SNAPSHOT'
+version = latestGitTag ?: '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications
+}
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    coordinates('kr.co.smunity', 'sangmyung-univ-auth', version)
+
+    pom {
+        name = 'sangmyung-univ-auth'
+        description = 'Sangmyung University Student Authentication Library'
+        url = 'https://github.com/smu-nity/sangmyung-univ-auth'
+
+        licenses {
+            license {
+                name = 'MIT License'
+                url = 'https://github.com/smu-nity/sangmyung-univ-auth/blob/main/LICENSE'
+            }
+        }
+
+        developers {
+            developer {
+                id = 'hyunmin0317'
+                name = 'Hyunmin Choi'
+                email = 'hyunmin-choi@naver.com'
+            }
+        }
+
+        scm {
+            connection = "scm:git:git://github.com/smu-nity/sangmyung-univ-auth.git"
+            developerConnection = "scm:git:ssh://github.com/smu-nity/sangmyung-univ-auth.git"
+            url = "https://github.com/smu-nity/sangmyung-univ-auth"
+        }
+    }
 }
 
 dependencies {
@@ -17,11 +59,11 @@ dependencies {
     implementation 'org.json:json:20240303'
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
     // Testing
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
 }
 
 test {
