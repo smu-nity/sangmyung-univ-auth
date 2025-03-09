@@ -1,4 +1,4 @@
-package com.smunity.util;
+package com.smunity;
 
 import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
@@ -13,7 +13,7 @@ import static com.smunity.exception.code.AuthErrorCode.AUTH_UNAUTHORIZED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class AuthUtilTest {
+class AuthManagerTest {
 
     @Test
     @DisplayName("올바른 인증 정보로 로그인 시 인증 응답 반환")
@@ -23,7 +23,7 @@ class AuthUtilTest {
         String password = System.getenv("PASSWORD");
 
         // when
-        AuthResponseDto responseDto = AuthUtil.authenticate(username, password);
+        AuthResponseDto responseDto = AuthManager.authenticate(username, password);
 
         // then
         assertNotNull(responseDto);
@@ -42,7 +42,7 @@ class AuthUtilTest {
 
         // when & then
         AuthException exception = Assertions.assertThrows(AuthException.class, () -> {
-            AuthUtil.authenticate(username, password);
+            AuthManager.authenticate(username, password);
         });
         Assertions.assertEquals(exception.getErrorCode(), AUTH_UNAUTHORIZED);
     }
@@ -55,7 +55,7 @@ class AuthUtilTest {
         String password = System.getenv("PASSWORD");
 
         // when
-        List<AuthCourseResponseDto> responseDtos = AuthUtil.readCourses(username, password);
+        List<AuthCourseResponseDto> responseDtos = AuthManager.readCourses(username, password);
 
         // then
         assertEquals(46, responseDtos.size());
@@ -70,7 +70,7 @@ class AuthUtilTest {
 
         // when & then
         AuthException exception = Assertions.assertThrows(AuthException.class, () -> {
-            AuthUtil.authenticate(username, password);
+            AuthManager.authenticate(username, password);
         });
         Assertions.assertEquals(exception.getErrorCode(), AUTH_UNAUTHORIZED);
     }

@@ -18,12 +18,12 @@ public class FetchUtil {
 
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
 
-    protected static JSONObject fetchInfo(String username, String password) {
+    public static JSONObject fetchInfo(String username, String password) {
         JSONArray response = fetchData(AuthRequestDto.of(username, password), "UsrSchMng/selectStdInfo.do", "dsStdInfoList");
         return response.getJSONObject(0);
     }
 
-    protected static JSONArray fetchCourses(String username, String password) {
+    public static JSONArray fetchCourses(String username, String password) {
         return fetchData(AuthRequestDto.of(username, password), "UsrRecMatt/list.do", "dsRecMattList");
     }
 

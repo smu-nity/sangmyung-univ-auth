@@ -1,11 +1,11 @@
 # sangmyung-univ-auth ![Java versions](https://img.shields.io/badge/Java-17-007396?style=round-square&logo=java&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green) ![Release](https://img.shields.io/badge/release-1.0.0-red)
 
-**상명대학교 재학생 인증 라이브러리**
+**상명대학교 학생 인증 라이브러리**
 
 ## Features
 
-- 상명대학교 재학생 여부를 간편하게 확인하는 라이브러리입니다.
-- 재학생 인증 방식은 상명대학교 포털 SSO 인증 방식입니다.
+- 상명대학교 학생 여부를 간편하게 확인하는 라이브러리입니다.
+- 학생 인증 방식은 상명대학교 포털 SSO 인증 방식입니다.
 
 ## Installation
 
@@ -28,6 +28,10 @@ implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.0'
 ## Usage
 
 ```java
+import com.smunity.AuthManager;
+import com.smunity.dto.AuthResponseDto;
+import com.smunity.exception.AuthException;
+
 public class AuthExample {
 
     public static void main(String[] args) {
@@ -37,7 +41,7 @@ public class AuthExample {
             String password = "your_password";
 
             // 인증 실행
-            AuthResponseDto responseDto = AuthUtil.authenticate(username, password);
+            AuthResponseDto responseDto = AuthManager.authenticate(username, password);
 
             // 인증 성공: AuthResponseDto[username=201911019, name=최현민, department=컴퓨터과학전공, email=hyunmin-choi@naver.com]
             System.out.println("인증 성공: " + responseDto);
