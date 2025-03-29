@@ -1,4 +1,4 @@
-# sangmyung-univ-auth ![Java versions](https://img.shields.io/badge/Java-17-007396?style=round-square&logo=java&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green) ![Release](https://img.shields.io/badge/release-1.0.0-red)
+# sangmyung-univ-auth ![Java versions](https://img.shields.io/badge/Java-17-007396?style=round-square&logo=java&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green) ![Release](https://img.shields.io/badge/release-1.0.1-red)
 
 **상명대학교 학생 인증 라이브러리**
 
@@ -12,16 +12,17 @@
 ### Gradle (Short)
 
 ```gradle
-implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.0'
+implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.1'
 ```
 
 ### Maven
 
 ```xml
+
 <dependency>
     <groupId>kr.co.smunity</groupId>
     <artifactId>sangmyung-univ-auth</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
