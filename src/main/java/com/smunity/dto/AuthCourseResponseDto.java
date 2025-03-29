@@ -26,14 +26,15 @@ public record AuthCourseResponseDto(
     }
 
     private static AuthCourseResponseDto from(JSONObject obj) {
+        String type = obj.getString("CMP_DIV_NM");
         return AuthCourseResponseDto.builder()
-                .number(obj.getString("SBJ_NO"))
+                .number(obj.optString("SBJ_NO", type))
                 .name(obj.getString("SBJ_NM"))
-                .type(obj.getString("CMP_DIV_NM"))
-                .grade(obj.getString("GRD_NM"))
+                .type(type)
+                .grade(obj.optString("GRD_NM"))
                 .year(obj.getString("SCH_YEAR"))
-                .semester(obj.getString("SMT_NM"))
-                .domain(obj.getString("CULT_ARA_NM"))
+                .semester(obj.optString("SMT_NM"))
+                .domain(obj.optString("CULT_ARA_NM"))
                 .credit(obj.getInt("CDT"))
                 .build();
     }
