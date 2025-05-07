@@ -29,8 +29,8 @@ class AuthManagerTest {
         assertNotNull(responseDto);
         assertEquals("201911019", responseDto.username());
         assertEquals("최현민", responseDto.name());
-        assertEquals("컴퓨터과학전공", responseDto.department());
         assertEquals("hyunmin-choi@naver.com", responseDto.email());
+        assertEquals("컴퓨터과학전공", responseDto.department());
     }
 
     @Test
