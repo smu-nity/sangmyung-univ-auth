@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.smunity.exception.code.AuthErrorCode.AUTH_UNAUTHORIZED;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AuthManagerTest {
 
@@ -31,6 +30,8 @@ class AuthManagerTest {
         assertEquals("최현민", responseDto.name());
         assertEquals("hyunmin-choi@naver.com", responseDto.email());
         assertEquals("컴퓨터과학전공", responseDto.department());
+        assertNull(responseDto.secondDepartment());
+        assertFalse(responseDto.isDoubleMajor());
     }
 
     @Test
