@@ -9,19 +9,16 @@ public record AuthResponseDto(
         String name,
         String email,
         String department,
-        String secondDepartment,
-        boolean isDoubleMajor
+        String secondDepartment
 ) {
 
     public static AuthResponseDto from(JSONObject obj) {
-        String secondDepartment = getSecondDepartment(obj.optString("MJR_CD2"));
         return AuthResponseDto.builder()
                 .username(obj.getString("STDNO"))
                 .name(obj.getString("NM_KOR"))
                 .email(obj.getString("EMAIL"))
                 .department(getDepartment(obj.getString("TMP_DEPT_MJR_NM")))
-                .secondDepartment(secondDepartment)
-                .isDoubleMajor(secondDepartment != null)
+                .secondDepartment(getSecondDepartment(obj.optString("MJR_CD2")))
                 .build();
     }
 
