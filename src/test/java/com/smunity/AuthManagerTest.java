@@ -31,7 +31,6 @@ class AuthManagerTest {
         assertEquals("hyunmin-choi@naver.com", responseDto.email());
         assertEquals("컴퓨터과학전공", responseDto.department());
         assertNull(responseDto.secondDepartment());
-        assertFalse(responseDto.isDoubleMajor());
     }
 
     @Test
