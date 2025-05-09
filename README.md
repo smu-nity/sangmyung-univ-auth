@@ -44,7 +44,7 @@ public class AuthExample {
             // 인증 실행
             AuthResponseDto responseDto = AuthManager.authenticate(username, password);
 
-            // 인증 성공: AuthResponseDto[username=201911019, name=최현민, email=hyunmin-choi@naver.com, department=컴퓨터과학전공, secondDepartment=null, isDoubleMajor=false]
+            // 인증 성공: AuthResponseDto[username=201911019, name=최현민, email=hyunmin-choi@naver.com, department=컴퓨터과학전공, secondDepartment=null]
             System.out.println("인증 성공: " + responseDto);
         } catch (AuthException e) {
             // 인증 실패: Username and password do not match.
@@ -79,8 +79,7 @@ public class AuthExample {
           "name": "최현민",
           "email": "hyunmin-choi@naver.com",
           "department": "컴퓨터과학전공",
-          "secondDepartment": null,
-          "isDoubleMajor": false
+          "secondDepartment": null
       }
       ```
     - **Fail**: `401 Unauthorized`
