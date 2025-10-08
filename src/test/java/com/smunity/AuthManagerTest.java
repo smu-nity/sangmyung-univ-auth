@@ -56,6 +56,7 @@ class AuthManagerTest {
         AuthCourseResponseDto responseDto = AuthManager.readCourses(username, password);
 
         // then
+        assertNotNull(responseDto);
         assertEquals(46, responseDto.count());
         assertEquals(130, responseDto.status().total());
         assertEquals(132, responseDto.status().completed());
