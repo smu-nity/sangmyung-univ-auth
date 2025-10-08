@@ -13,6 +13,10 @@ public record AuthResponseDto(
 ) {
 
     public static AuthResponseDto from(JSONObject obj) {
+        return of(obj.getJSONArray("dsStdInfoList").getJSONObject(0));
+    }
+
+    private static AuthResponseDto of(JSONObject obj) {
         return AuthResponseDto.builder()
                 .username(obj.getString("STDNO"))
                 .name(obj.getString("NM_KOR"))

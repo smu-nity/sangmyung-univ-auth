@@ -3,7 +3,6 @@ package com.smunity;
 import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
 import com.smunity.util.FetchUtil;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -33,7 +32,7 @@ public class AuthManager {
      * @return 이수 과목 정보를 담은 {@link AuthCourseResponseDto} 객체
      */
     public static AuthCourseResponseDto readCourses(String username, String password) {
-        JSONArray response = FetchUtil.fetchCourses(username, password);
+        JSONObject response = FetchUtil.fetchCourses(username, password);
         return AuthCourseResponseDto.from(response);
     }
 }

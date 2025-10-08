@@ -19,13 +19,17 @@ public record CourseResponseDto(
         int credit
 ) {
 
-    public static List<CourseResponseDto> from(JSONArray objs) {
+    public static List<CourseResponseDto> from(JSONObject obj) {
+        return from(obj.getJSONArray("dsRecMattList"));
+    }
+
+    private static List<CourseResponseDto> from(JSONArray objs) {
         return IntStream.range(0, objs.length())
-                .mapToObj(i -> from(objs.getJSONObject(i)))
+                .mapToObj(i -> of(objs.getJSONObject(i)))
                 .toList();
     }
 
-    private static CourseResponseDto from(JSONObject obj) {
+    private static CourseResponseDto of(JSONObject obj) {
         String type = obj.getString("CMP_DIV_NM");
         return CourseResponseDto.builder()
                 .number(obj.optString("SBJ_NO", type))

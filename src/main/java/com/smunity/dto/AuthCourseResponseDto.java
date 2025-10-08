@@ -1,7 +1,7 @@
 package com.smunity.dto;
 
 import lombok.Builder;
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ public record AuthCourseResponseDto(
         List<CourseResponseDto> content
 ) {
 
-    public static AuthCourseResponseDto from(JSONArray objs) {
-        List<CourseResponseDto> content = CourseResponseDto.from(objs);
+    public static AuthCourseResponseDto from(JSONObject obj) {
+        List<CourseResponseDto> content = CourseResponseDto.from(obj);
         return AuthCourseResponseDto.builder()
                 .count(content.size())
                 .content(content)
