@@ -8,7 +8,8 @@ import java.util.List;
 @Builder
 public record AuthCourseResponseDto(
         int count,
-        List<CourseResponseDto> content
+        List<CourseResponseDto> content,
+        StatusResponseDto status
 ) {
 
     public static AuthCourseResponseDto from(JSONObject obj) {
@@ -16,6 +17,7 @@ public record AuthCourseResponseDto(
         return AuthCourseResponseDto.builder()
                 .count(content.size())
                 .content(content)
+                .status(StatusResponseDto.from(obj))
                 .build();
     }
 }

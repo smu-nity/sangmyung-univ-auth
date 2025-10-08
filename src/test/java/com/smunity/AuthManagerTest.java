@@ -57,6 +57,10 @@ class AuthManagerTest {
 
         // then
         assertEquals(46, responseDto.count());
+        assertEquals(130, responseDto.status().total());
+        assertEquals(132, responseDto.status().completed());
+        assertEquals(0, responseDto.status().required());
+        assertEquals(100, responseDto.status().completion());
     }
 
     @Test
