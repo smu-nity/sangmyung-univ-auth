@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.smunity.exception.code.AuthErrorCode.AUTH_FETCH_FAILURE;
 
@@ -26,9 +27,8 @@ public class FetchUtil {
     }
 
     private static JSONObject fetchData(AuthRequestDto requestDto, String url) {
-        Map<String, String> session = LoginUtil.login(requestDto);
         try {
-            HttpURLConnection connection = createConnection(BASE_URL + url, session);
+            HttpURLConnection connection = createConnection(BASE_URL + url, LoginUtil.login(requestDto));
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (IOException e) {
@@ -49,12 +49,8 @@ public class FetchUtil {
     }
 
     private static JSONObject readResponse(HttpURLConnection connection) throws IOException {
-        StringBuilder response = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null)
-                response.append(line);
+            return new JSONObject(reader.lines().collect(Collectors.joining()));
         }
-        return new JSONObject(response.toString());
     }
 }
