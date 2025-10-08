@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static com.smunity.exception.code.AuthErrorCode.AUTH_UNAUTHORIZED;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +42,7 @@ class AuthManagerTest {
         AuthException exception = Assertions.assertThrows(AuthException.class, () -> {
             AuthManager.authenticate(username, password);
         });
-        Assertions.assertEquals(exception.getErrorCode(), AUTH_UNAUTHORIZED);
+        Assertions.assertEquals(AUTH_UNAUTHORIZED, exception.getErrorCode());
     }
 
     @Test
@@ -55,10 +53,15 @@ class AuthManagerTest {
         String password = System.getenv("PASSWORD");
 
         // when
-        List<AuthCourseResponseDto> responseDtos = AuthManager.readCourses(username, password);
+        AuthCourseResponseDto responseDto = AuthManager.readCourses(username, password);
 
         // then
-        assertEquals(46, responseDtos.size());
+        assertNotNull(responseDto);
+        assertEquals(46, responseDto.count());
+        assertEquals(130, responseDto.status().total());
+        assertEquals(132, responseDto.status().completed());
+        assertEquals(0, responseDto.status().required());
+        assertEquals(100, responseDto.status().completion());
     }
 
     @Test
@@ -72,6 +75,6 @@ class AuthManagerTest {
         AuthException exception = Assertions.assertThrows(AuthException.class, () -> {
             AuthManager.authenticate(username, password);
         });
-        Assertions.assertEquals(exception.getErrorCode(), AUTH_UNAUTHORIZED);
+        Assertions.assertEquals(AUTH_UNAUTHORIZED, exception.getErrorCode());
     }
 }

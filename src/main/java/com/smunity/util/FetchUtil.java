@@ -2,7 +2,6 @@ package com.smunity.util;
 
 import com.smunity.dto.AuthRequestDto;
 import com.smunity.exception.AuthException;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -11,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.smunity.exception.code.AuthErrorCode.AUTH_FETCH_FAILURE;
 
@@ -19,21 +19,18 @@ public class FetchUtil {
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
 
     public static JSONObject fetchInfo(String username, String password) {
-        JSONArray response = fetchData(AuthRequestDto.of(username, password), "UsrSchMng/selectStdInfo.do", "dsStdInfoList");
-        return response.getJSONObject(0);
+        return fetchData(AuthRequestDto.of(username, password), "UsrSchMng/selectStdInfo.do");
     }
 
-    public static JSONArray fetchCourses(String username, String password) {
-        return fetchData(AuthRequestDto.of(username, password), "UsrRecMatt/list.do", "dsRecMattList");
+    public static JSONObject fetchCourses(String username, String password) {
+        return fetchData(AuthRequestDto.of(username, password), "UsrRecMatt/list.do");
     }
 
-    private static JSONArray fetchData(AuthRequestDto requestDto, String url, String key) {
-        Map<String, String> session = LoginUtil.login(requestDto);
+    private static JSONObject fetchData(AuthRequestDto requestDto, String url) {
         try {
-            HttpURLConnection connection = createConnection(BASE_URL + url, session);
+            HttpURLConnection connection = createConnection(BASE_URL + url, LoginUtil.login(requestDto));
             connection.getOutputStream().write(createRequestData(requestDto));
-            JSONObject response = readResponse(connection);
-            return response.getJSONArray(key);
+            return readResponse(connection);
         } catch (IOException e) {
             throw new AuthException("Failed to fetch data from URL: '%s'.".formatted(url), AUTH_FETCH_FAILURE);
         }
@@ -52,12 +49,8 @@ public class FetchUtil {
     }
 
     private static JSONObject readResponse(HttpURLConnection connection) throws IOException {
-        StringBuilder response = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null)
-                response.append(line);
+            return new JSONObject(reader.lines().collect(Collectors.joining()));
         }
-        return new JSONObject(response.toString());
     }
 }
