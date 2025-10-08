@@ -6,8 +6,6 @@ import com.smunity.util.FetchUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-
 /**
  * 학생 인증 및 이수 과목 조회 기능을 제공하는 클래스
  *
@@ -32,9 +30,9 @@ public class AuthManager {
      *
      * @param username 학번
      * @param password 비밀번호
-     * @return 이수 과목 정보를 담은 {@link AuthCourseResponseDto} 객체들의 리스트
+     * @return 이수 과목 정보를 담은 {@link AuthCourseResponseDto} 객체
      */
-    public static List<AuthCourseResponseDto> readCourses(String username, String password) {
+    public static AuthCourseResponseDto readCourses(String username, String password) {
         JSONArray response = FetchUtil.fetchCourses(username, password);
         return AuthCourseResponseDto.from(response);
     }
