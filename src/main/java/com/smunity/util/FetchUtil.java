@@ -8,15 +8,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.smunity.exception.code.AuthErrorCode.SMU_FETCH_FAILURE;
+import static com.smunity.exception.code.AuthErrorCode.SMU_FETCH_TIMEOUT;
 
 public class FetchUtil {
 
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
+    private static final int TIMEOUT = 30000;
 
     public static JSONObject fetchInfo(String username, String password) {
         return fetchData(AuthRequestDto.of(username, password), "UsrSchMng/selectStdInfo.do");
@@ -31,14 +34,18 @@ public class FetchUtil {
             HttpURLConnection connection = createConnection(BASE_URL + url, LoginUtil.login(requestDto));
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
+        } catch (SocketTimeoutException e) {
+            throw new AuthServerException(SMU_FETCH_TIMEOUT, e);
         } catch (IOException e) {
-            throw new AuthServerException("Failed to fetch data from URL: '%s'.".formatted(url), SMU_FETCH_FAILURE);
+            throw new AuthServerException(SMU_FETCH_FAILURE, e);
         }
     }
 
     private static HttpURLConnection createConnection(String url, Map<String, String> session) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("POST");
+        connection.setConnectTimeout(TIMEOUT);
+        connection.setReadTimeout(TIMEOUT);
         session.forEach((key, value) -> connection.addRequestProperty("Cookie", key + "=" + value));
         connection.setDoOutput(true);
         return connection;

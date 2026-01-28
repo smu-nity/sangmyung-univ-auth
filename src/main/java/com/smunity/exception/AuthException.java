@@ -8,11 +8,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class AuthException extends RuntimeException {
 
-    private final String message;
     private final AuthErrorCode errorCode;
+
+    public AuthException(AuthErrorCode errorCode, Throwable cause) {
+        super(cause);
+        this.errorCode = errorCode;
+    }
 
     @Override
     public String getMessage() {
-        return String.format("%s\n[%s] %s", message, errorCode.getCode(), errorCode.getMessage());
+        return "[%s] %s".formatted(errorCode.getCode(), errorCode.getMessage());
     }
 }
