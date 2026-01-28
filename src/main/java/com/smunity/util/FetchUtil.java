@@ -1,7 +1,7 @@
 package com.smunity.util;
 
 import com.smunity.dto.AuthRequestDto;
-import com.smunity.exception.AuthException;
+import com.smunity.exception.AuthServerException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.smunity.exception.code.AuthErrorCode.AUTH_FETCH_FAILURE;
+import static com.smunity.exception.code.AuthErrorCode.SMU_FETCH_FAILURE;
 
 public class FetchUtil {
 
@@ -32,7 +32,7 @@ public class FetchUtil {
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (IOException e) {
-            throw new AuthException("Failed to fetch data from URL: '%s'.".formatted(url), AUTH_FETCH_FAILURE);
+            throw new AuthServerException("Failed to fetch data from URL: '%s'.".formatted(url), SMU_FETCH_FAILURE);
         }
     }
 
