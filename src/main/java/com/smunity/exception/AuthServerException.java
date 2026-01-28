@@ -4,7 +4,7 @@ import com.smunity.exception.code.AuthErrorCode;
 
 public class AuthServerException extends AuthException {
 
-    public AuthServerException(String message, AuthErrorCode errorCode) {
-        super(message, errorCode);
+    public AuthServerException(AuthErrorCode errorCode, Throwable cause) {
+        super(errorCode, cause);
     }
 }

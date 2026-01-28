@@ -35,12 +35,11 @@ public class FetchUtil {
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (SocketTimeoutException e) {
-            throw new AuthServerException("Fetch data timed out from URL: '%s'.".formatted(url), SMU_FETCH_TIMEOUT);
+            throw new AuthServerException(SMU_FETCH_TIMEOUT, e);
         } catch (IOException e) {
-            throw new AuthServerException("Failed to fetch data from URL: '%s'.".formatted(url), SMU_FETCH_FAILURE);
+            throw new AuthServerException(SMU_FETCH_FAILURE, e);
         }
     }
-
 
     private static HttpURLConnection createConnection(String url, Map<String, String> session) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
