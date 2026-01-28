@@ -1,7 +1,8 @@
 package com.smunity.util;
 
 import com.smunity.dto.AuthRequestDto;
-import com.smunity.exception.AuthException;
+import com.smunity.exception.AuthClientException;
+import com.smunity.exception.AuthServerException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -20,7 +21,7 @@ public class LoginUtil {
             Connection.Response loginResponse = executeLogin(requestDto);
             return getSessionCookies(loginResponse);
         } catch (IOException e) {
-            throw new AuthException("Failed to Login.", AUTH_LOGIN_FAIL);
+            throw new AuthServerException("Failed to Login.", SMU_LOGIN_FAIL);
         }
     }
 
@@ -31,7 +32,7 @@ public class LoginUtil {
                 .method(Connection.Method.POST)
                 .execute();
         if (response.url().toString().equals(LOGIN_URL))
-            throw new AuthException("Username and password do not match.", AUTH_UNAUTHORIZED);
+            throw new AuthClientException("Username and password do not match.", AUTH_UNAUTHORIZED);
         return response;
     }
 
@@ -41,7 +42,7 @@ public class LoginUtil {
                 .cookies(loginResponse.cookies())
                 .execute();
         if (!response.url().toString().equals(BASE_URL))
-            throw new AuthException("Login failed, exceeded 5 attempts.", AUTH_EXCEEDED_LOGIN_ATTEMPTS);
+            throw new AuthClientException("Login failed, exceeded 5 attempts.", AUTH_EXCEEDED_LOGIN_ATTEMPTS);
         return response.cookies();
     }
 }
