@@ -16,7 +16,13 @@ repositories {
 }
 
 signing {
-    useGpgCmd()
+    def signingKey = System.getenv("ORG_GRADLE_PROJECT_signingKey")
+    def signingPassword = System.getenv("ORG_GRADLE_PROJECT_signingPassword")
+    if (signingKey && signingPassword) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    } else {
+        useGpgCmd()
+    }
     sign publishing.publications
 }
 
