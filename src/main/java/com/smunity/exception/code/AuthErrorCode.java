@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AuthErrorCode {
+public enum AuthErrorCode implements BaseCode {
 
     // Auth Errors
     AUTH_UNAUTHORIZED(401, "AUTH001", "학번 및 비밀번호가 일치하지 않습니다."),
