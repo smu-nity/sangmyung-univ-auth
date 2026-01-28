@@ -7,6 +7,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Map;
 
 import static com.smunity.exception.code.AuthErrorCode.*;
@@ -15,18 +16,22 @@ public class LoginUtil {
 
     private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
+    private static final int TIMEOUT = 30000;
 
     protected static Map<String, String> login(AuthRequestDto requestDto) {
         try {
             Connection.Response loginResponse = executeLogin(requestDto);
             return getSessionCookies(loginResponse);
+        } catch (SocketTimeoutException e) {
+            throw new AuthServerException("Login request timed out.", SMU_LOGIN_TIMEOUT);
         } catch (IOException e) {
-            throw new AuthServerException("Failed to Login.", SMU_LOGIN_FAIL);
+            throw new AuthServerException("Failed to Login.", SMU_LOGIN_FAILURE);
         }
     }
 
     private static Connection.Response executeLogin(AuthRequestDto requestDto) throws IOException {
         Connection.Response response = Jsoup.connect(LOGIN_URL)
+                .timeout(TIMEOUT)
                 .data("user_id", requestDto.username())
                 .data("user_password", requestDto.password())
                 .method(Connection.Method.POST)
@@ -38,6 +43,7 @@ public class LoginUtil {
 
     private static Map<String, String> getSessionCookies(Connection.Response loginResponse) throws IOException {
         Connection.Response response = Jsoup.connect(BASE_URL + "index.do")
+                .timeout(TIMEOUT)
                 .method(Connection.Method.GET)
                 .cookies(loginResponse.cookies())
                 .execute();
