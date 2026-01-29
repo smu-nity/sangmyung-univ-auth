@@ -4,6 +4,7 @@ import com.smunity.dto.AuthRequestDto;
 import com.smunity.exception.AuthClientException;
 import com.smunity.exception.AuthServerException;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class LoginUtil {
         try {
             Connection.Response loginResponse = executeLogin(requestDto);
             return getSessionCookies(loginResponse);
+        } catch (HttpStatusException e) {
+            throw new AuthClientException(AUTH_PASSWORD_EXPIRED);
         } catch (SocketTimeoutException e) {
             throw new AuthServerException(SMU_LOGIN_TIMEOUT, e);
         } catch (IOException e) {
