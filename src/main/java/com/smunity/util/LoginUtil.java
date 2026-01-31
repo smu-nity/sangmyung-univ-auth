@@ -17,7 +17,7 @@ public class LoginUtil {
 
     private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
-    private static final int TIMEOUT = 10000;
+    private static final int TIMEOUT = 10_000;
 
     protected static Map<String, String> login(AuthRequestDto requestDto) {
         try {
