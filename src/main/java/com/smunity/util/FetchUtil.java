@@ -19,7 +19,7 @@ import static com.smunity.exception.code.AuthErrorCode.SMU_FETCH_TIMEOUT;
 public class FetchUtil {
 
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
-    private static final int TIMEOUT = 30000;
+    private static final int TIMEOUT = 10_000;
 
     public static JSONObject fetchInfo(String username, String password) {
         return fetchData(AuthRequestDto.of(username, password), "UsrSchMng/selectStdInfo.do");
