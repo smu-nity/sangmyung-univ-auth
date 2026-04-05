@@ -16,7 +16,7 @@ public record StatusResponseDto(
     }
 
     private static StatusResponseDto of(JSONObject obj) {
-        return of(obj.getInt("GRDT_CRIT_CDT"), obj.getInt("TOTAL_GET_CDT"));
+        return of(obj.getInt("GRDT_CRIT_CDT"), obj.optInt("TOTAL_GET_CDT"));
     }
 
     private static StatusResponseDto of(int total, int completed) {
