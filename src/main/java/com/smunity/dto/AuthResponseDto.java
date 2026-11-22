@@ -9,20 +9,25 @@ public record AuthResponseDto(
         String name,
         String email,
         String department,
-        String secondDepartment
+        String secondDepartment,
+        boolean teachingTrack
 ) {
+
+    private static final String TEACHING_PREFIX = "(교직)";
 
     public static AuthResponseDto from(JSONObject obj) {
         return of(obj.getJSONArray("dsStdInfoList").getJSONObject(0));
     }
 
     private static AuthResponseDto of(JSONObject obj) {
+        String secondDepartment = getSecondDepartment(obj.optString("MJR_CD2"));
         return AuthResponseDto.builder()
                 .username(obj.getString("STDNO"))
                 .name(obj.getString("NM_KOR"))
                 .email(obj.getString("EMAIL"))
                 .department(getDepartment(obj.getString("TMP_DEPT_MJR_NM")))
-                .secondDepartment(getSecondDepartment(obj.optString("MJR_CD2")))
+                .secondDepartment(removeTeachingPrefix(secondDepartment))
+                .teachingTrack(isTeachingTrack(secondDepartment))
                 .build();
     }
 
@@ -33,5 +38,13 @@ public record AuthResponseDto(
 
     private static String getSecondDepartment(String dept) {
         return dept.isBlank() ? null : getDepartment(dept);
+    }
+
+    private static boolean isTeachingTrack(String dept) {
+        return dept != null && dept.startsWith(TEACHING_PREFIX);
+    }
+
+    private static String removeTeachingPrefix(String dept) {
+        return isTeachingTrack(dept) ? dept.substring(TEACHING_PREFIX.length()).trim() : dept;
     }
 }
